@@ -2,10 +2,10 @@ package com.scraper.processor;
 
 import com.scraper.enums.TemplateType;
 import com.scraper.model.Mail;
-import com.scraper.model.ScrappedBusiness;
+import com.scraper.model.ScrapedBusiness;
 import com.scraper.service.MailQuery;
 import com.scraper.service.MailService;
-import com.scraper.service.ScrappedBusinessQuery;
+import com.scraper.service.ScrapedBusinessQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,28 +20,28 @@ public class SendEmailProcessor {
 
     private final MailService mailService;
     private final MailQuery mailQuery;
-    private final ScrappedBusinessQuery scrappedBusinessQuery;
+    private final ScrapedBusinessQuery scrapedBusinessQuery;
 
     @Scheduled(fixedRate = 1000)
-    public void sendEmailsToScrappedBusiness() {
+    public void sendEmailsToScrapedBusiness() {
         processScrapedEmails();
     }
 
     public void processScrapedEmails() {
-        scrappedBusinessQuery
-                .getScrappedBusinessByEmailNotNull(20)
+        scrapedBusinessQuery
+                .getScrapedBusinessByEmailNotNull(20)
                 .forEach(this::processEmail);
     }
 
-    public void processEmail(ScrappedBusiness scrappedBusiness) {
-        Optional<Mail> mail = mailQuery.createMailObjectWithScrappedDetails(scrappedBusiness, TemplateType.HEALTH_CHECK_PROMO);
+    public void processEmail(ScrapedBusiness scrapedBusiness) {
+        Optional<Mail> mail = mailQuery.createMailObjectWithScrapedDetails(scrapedBusiness, TemplateType.HEALTH_CHECK_PROMO);
 
         if (mail.isEmpty()) {
             log.info("Cannot send email, mail is empty!");
             return;
         }
 
-        mailService.processMail(scrappedBusiness, mail.get());
+        mailService.processMail(scrapedBusiness, mail.get());
 
     }
 }

@@ -1,11 +1,11 @@
 package com.scraper.processor;
 
-import com.scraper.mapper.ScrappedBusinessMapper;
+import com.scraper.mapper.ScrapedBusinessMapper;
 import com.scraper.model.Location;
 import com.scraper.service.GoogleMapsService;
 import com.scraper.service.LocationQuery;
 import com.scraper.service.LocationService;
-import com.scraper.service.ScrappedBusinessService;
+import com.scraper.service.ScrapedBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScrappedBusinessProcessor {
+public class ScrapedBusinessProcessor {
 
     private final GoogleMapsService googleMapsService;
     private final LocationQuery locationQuery;
-    private final ScrappedBusinessMapper scrappedBusinessMapper;
-    private final ScrappedBusinessService scrappedBusinessService;
+    private final ScrapedBusinessMapper scrapedBusinessMapper;
+    private final ScrapedBusinessService scrapedBusinessService;
     private final LocationService locationService;
 
     @Value("${google.keyword}")
@@ -41,13 +41,13 @@ public class ScrappedBusinessProcessor {
         // Get fetched businesses from Google Maps API
         // Save them as a ScrapedBusiness entity to database
         googleMapsService.query(location.getCity(), keyword).stream()
-                .map(googlePlaceDetails -> scrappedBusinessMapper.map(googlePlaceDetails, keyword, location.getCity()))
-                .forEach(scrappedBusiness -> {
+                .map(googlePlaceDetails -> scrapedBusinessMapper.map(googlePlaceDetails, keyword, location.getCity()))
+                .forEach(scrapedBusiness -> {
                     try {
-                        log.info("Scraped business called {} ", scrappedBusiness.getName());
-                        scrappedBusinessService.saveBusiness(scrappedBusiness);
+                        log.info("Scraped business called {} ", scrapedBusiness.getName());
+                        scrapedBusinessService.saveBusiness(scrapedBusiness);
                     } catch (Exception e) {
-                        log.error("Error saving scrapped business. Business name: {}, Business PlaceId: {}", scrappedBusiness.getName(), scrappedBusiness.getPlaceId(), e);
+                        log.error("Error saving scraped business. Business name: {}, Business PlaceId: {}", scrapedBusiness.getName(), scrapedBusiness.getPlaceId(), e);
                     }
                 });
 

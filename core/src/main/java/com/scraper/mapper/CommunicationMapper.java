@@ -2,7 +2,7 @@ package com.scraper.mapper;
 
 import com.scraper.model.Communication;
 import com.scraper.model.Mail;
-import com.scraper.model.ScrappedBusiness;
+import com.scraper.model.ScrapedBusiness;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CommunicationMapper {
 
-    public Communication map(ScrappedBusiness scrappedBusiness, Mail mail) {
+    public Communication map(ScrapedBusiness scrapedBusiness, Mail mail) {
         return Communication.builder()
-                .scrappedBusiness(scrappedBusiness)
+                .scrapedBusiness(scrapedBusiness)
                 .mail(mail)
                 .contacted(true)
                 .errorMessage(null)

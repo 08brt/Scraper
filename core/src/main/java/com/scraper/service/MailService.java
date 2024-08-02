@@ -1,7 +1,7 @@
 package com.scraper.service;
 
 import com.scraper.model.Mail;
-import com.scraper.model.ScrappedBusiness;
+import com.scraper.model.ScrapedBusiness;
 import com.scraper.repository.MailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +21,10 @@ public class MailService {
     private final JavaMailSender mailSender;
     private final MailRepository mailRepository;
     private final CommunicationService communicationService;
-    private final ScrappedBusinessService scrappedBusinessService;
+    private final ScrapedBusinessService scrapedBusinessService;
 
     @Transactional
-    public void processMail(ScrappedBusiness scrappedBusiness, Mail mail) {
+    public void processMail(ScrapedBusiness scrapedBusiness, Mail mail) {
 
         try {
             log.info("Preparing to send email");
@@ -35,17 +35,17 @@ public class MailService {
 
             // Save communication
             log.info("Saving communication");
-            communicationService.saveCommunication(scrappedBusiness, mail);
+            communicationService.saveCommunication(scrapedBusiness, mail);
 
             // Send Mail
             log.info("Sending email");
             mailSender.send(setSimpleMailMessage(mail));
 
             // Mark as emailed
-            scrappedBusinessService.setAsEmailed(scrappedBusiness);
+            scrapedBusinessService.setAsEmailed(scrapedBusiness);
         } catch (Exception e) {
-            log.error("Error occurred while emailing ScrappedBusinessId {}", scrappedBusiness.getId(), e);
-            scrappedBusinessService.setErrorMessageAndMarkError(scrappedBusiness, e.getMessage());
+            log.error("Error occurred while emailing ScrapedBusinessId {}", scrapedBusiness.getId(), e);
+            scrapedBusinessService.setErrorMessageAndMarkError(scrapedBusiness, e.getMessage());
         }
 
     }

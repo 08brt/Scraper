@@ -10,10 +10,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "scrapped_business")
+@Table(name = "scraped_business")
 @Getter
 @Setter
-public class ScrappedBusiness extends AbstractEntity {
+public class ScrapedBusiness extends AbstractEntity {
 
     @NotBlank
     @Size(max = 255)

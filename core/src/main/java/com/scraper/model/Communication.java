@@ -16,8 +16,8 @@ import javax.validation.constraints.NotNull;
 public class Communication extends AbstractEntity {
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "scrapped_store_id", nullable = false)
-    private ScrappedBusiness scrappedBusiness;
+    @JoinColumn(name = "scraped_store_id", nullable = false)
+    private ScrapedBusiness scrapedBusiness;
 
     @NotNull
     @ManyToOne
@@ -29,8 +29,8 @@ public class Communication extends AbstractEntity {
     private boolean contacted;
 
     @Builder
-    public Communication(ScrappedBusiness scrappedBusiness, Mail mail, boolean contacted, String errorMessage) {
-        this.scrappedBusiness = scrappedBusiness;
+    public Communication(ScrapedBusiness scrapedBusiness, Mail mail, boolean contacted, String errorMessage) {
+        this.scrapedBusiness = scrapedBusiness;
         this.mail = mail;
         this.contacted = contacted;
     }

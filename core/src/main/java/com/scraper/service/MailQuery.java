@@ -3,7 +3,7 @@ package com.scraper.service;
 import com.scraper.enums.TemplateType;
 import com.scraper.model.EmailTemplate;
 import com.scraper.model.Mail;
-import com.scraper.model.ScrappedBusiness;
+import com.scraper.model.ScrapedBusiness;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class MailQuery {
 
     private final EmailTemplateQuery emailTemplateQuery;
 
-    public Optional<Mail> createMailObjectWithScrappedDetails(ScrappedBusiness scrappedBusiness, TemplateType templateType) {
+    public Optional<Mail> createMailObjectWithScrapedDetails(ScrapedBusiness scrapedBusiness, TemplateType templateType) {
         Optional<EmailTemplate> optionalEmailTemplate = emailTemplateQuery.getEmailTemplate(templateType);
 
         if (optionalEmailTemplate.isEmpty()) {
@@ -25,17 +25,17 @@ public class MailQuery {
         EmailTemplate emailTemplate = optionalEmailTemplate.get();
 
         // Get personalised body
-        String body = getPersonalisedBody(scrappedBusiness, emailTemplate.getTemplate());
+        String body = getPersonalisedBody(scrapedBusiness, emailTemplate.getTemplate());
 
         return Optional.of(Mail.builder()
                 .fromEmail("bartoszw2000@gmail.com")
-                .toEmails(scrappedBusiness.getEmailAddress())
+                .toEmails(scrapedBusiness.getEmailAddress())
                 .subject(emailTemplate.getSubject())
                 .body(body)
                 .build());
     }
 
-    private String getPersonalisedBody(ScrappedBusiness scrappedBusiness, String body) {
-        return body.replace("{Business Owner}", scrappedBusiness.getName());
+    private String getPersonalisedBody(ScrapedBusiness scrapedBusiness, String body) {
+        return body.replace("{Business Owner}", scrapedBusiness.getName());
     }
 }
