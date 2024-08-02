@@ -8,9 +8,9 @@ import com.scraper.service.LocationService;
 import com.scraper.service.ScrappedBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Value;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,6 @@ public class ScrappedBusinessProcessor {
     @Value("${google.keyword}")
     private String keyword;
 
-//    TODO ADD LOGGING OR SOME INFO ON WHAT THE FUCK IS GOING ON
     @Scheduled(fixedRate = 3600000) // 1 Hour
     public void fetchGoogleData() throws InterruptedException {
 
@@ -45,6 +44,7 @@ public class ScrappedBusinessProcessor {
                 .map(googlePlaceDetails -> scrappedBusinessMapper.map(googlePlaceDetails, keyword, location.getCity()))
                 .forEach(scrappedBusiness -> {
                     try {
+                        log.info("Scraped business called {} ", scrappedBusiness.getName());
                         scrappedBusinessService.saveBusiness(scrappedBusiness);
                     } catch (Exception e) {
                         log.error("Error saving scrapped business. Business name: {}, Business PlaceId: {}", scrappedBusiness.getName(), scrappedBusiness.getPlaceId(), e);

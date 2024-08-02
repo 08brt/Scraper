@@ -5,6 +5,7 @@ import com.scraper.service.ScrappedBusinessQuery;
 import com.scraper.service.ScrappedBusinessService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,10 +18,10 @@ public class ScrappedEmailProcessor {
     private final ScrappedBusinessQuery scrappedBusinessQuery;
     private final ScrappedBusinessService scrappedBusinessService;
 
-//    @Scheduled(fixedRate = 3600000) // 1 Hour
-//    public void processScrappedBusinessesForEmails() {
-//        processScrappedBusiness();
-//    }
+    @Scheduled(fixedRate = 3600000) // 1 Hour
+    public void processScrappedBusinessesForEmails() {
+        processScrappedBusiness();
+    }
 
     public void processScrappedBusiness() {
         scrappedBusinessQuery
