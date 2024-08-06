@@ -6,7 +6,6 @@ import com.scraper.repository.ScrapedBusinessRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +15,12 @@ public class ScrapedBusinessQuery {
 
     private final ScrapedBusinessRepository scrapedBusinessRepository;
 
-    @Transactional
+    /**
+     * Retrieves a list of ScrapedBusiness entities with a status of PENDING and a non-null website.
+     *
+     * @param recordsSize the maximum number of records to retrieve
+     * @return a list of ScrapedBusiness entities with a PENDING status and non-null website
+     */
     public List<ScrapedBusiness> getScrapedBusinessByPendingAndWebsiteNotNull(int recordsSize) {
         return scrapedBusinessRepository
                 .findAllByStatusTypeAndWebsiteIsNotNullOrderById(StatusType.PENDING, PageRequest.of(0, recordsSize))
@@ -24,7 +28,12 @@ public class ScrapedBusinessQuery {
                 .toList();
     }
 
-    @Transactional
+    /**
+     * Retrieves a list of ScrapedBusiness entities with a status of PROCESSED and a non-null email address.
+     *
+     * @param recordsSize the maximum number of records to retrieve
+     * @return a list of ScrapedBusiness entities with a PROCESSED status and non-null email address
+     */
     public List<ScrapedBusiness> getScrapedBusinessByEmailNotNull(int recordsSize) {
         return scrapedBusinessRepository
                 .findAllByStatusTypeAndEmailAddressIsNotNull(StatusType.PROCESSED, PageRequest.of(0, recordsSize))

@@ -19,6 +19,14 @@ public class GoogleMapsService {
     @Value("${google.api.url}")
     private String apiUrl;
 
+    /**
+     * Queries Google Places API for place details based on location and keyword.
+     *
+     * @param location the location to search in
+     * @param keyword the keyword to search for
+     * @return a list of GooglePlaceDetails containing the place details
+     * @throws InterruptedException if the thread is interrupted while sleeping between requests
+     */
     public List<GooglePlaceDetails> query(String location, String keyword) throws InterruptedException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -35,6 +43,16 @@ public class GoogleMapsService {
         return allDetails;
     }
 
+    /**
+     * Fetches places from Google Places API and populates the provided list with the results.
+     *
+     * @param restTemplate the RestTemplate for making HTTP requests
+     * @param headers the HTTP headers to include in the request
+     * @param requestBody the JSON body to send with the request
+     * @param allDetails the list to populate with place details
+     * @param pageToken the token for fetching the next page of results, or null for the first page
+     * @throws InterruptedException if the thread is interrupted while sleeping between requests
+     */
     private void fetchPlaces(RestTemplate restTemplate, HttpHeaders headers, String requestBody, List<GooglePlaceDetails> allDetails, String pageToken) throws InterruptedException {
         if (pageToken != null) {
             requestBody = requestBody.substring(0, requestBody.length() - 1) + ", \"pageToken\" : \"" + pageToken + "\" }";
@@ -53,6 +71,12 @@ public class GoogleMapsService {
         }
     }
 
+    /**
+     * Parses the response from Google Places API and returns a list of GooglePlaceDetails.
+     *
+     * @param response the response body from the API
+     * @return a list of GooglePlaceDetails extracted from the response
+     */
     private List<GooglePlaceDetails> parseResponse(Map<String, Object> response) {
         List<GooglePlaceDetails> placeDetailsList = new ArrayList<>();
 

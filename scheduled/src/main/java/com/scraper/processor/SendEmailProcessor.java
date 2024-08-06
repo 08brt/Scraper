@@ -22,7 +22,7 @@ public class SendEmailProcessor {
     private final MailQuery mailQuery;
     private final ScrapedBusinessQuery scrapedBusinessQuery;
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 3600000) // 1 Hour
     public void sendEmailsToScrapedBusiness() {
         processScrapedEmails();
     }
@@ -33,6 +33,12 @@ public class SendEmailProcessor {
                 .forEach(this::processEmail);
     }
 
+    /**
+     * Creates and sends an email for the given ScrapedBusiness using a specified template type.
+     * Logs an informational message if the email cannot be created.
+     *
+     * @param scrapedBusiness the ScrapedBusiness entity for which to create and send an email
+     */
     public void processEmail(ScrapedBusiness scrapedBusiness) {
         Optional<Mail> mail = mailQuery.createMailObjectWithScrapedDetails(scrapedBusiness, TemplateType.HEALTH_CHECK_PROMO);
 

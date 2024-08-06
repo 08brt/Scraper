@@ -27,6 +27,13 @@ public class ScrapedBusinessService {
             "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}"
     );
 
+    /**
+     * Scrapes email addresses from the specified URL using regular expression pattern matching.
+     *
+     * @param url the URL of the web page to scrape
+     * @return an Optional containing a comma-separated string of found email addresses, or empty if no emails are found
+     * @throws IOException if an I/O error occurs while connecting to the URL
+     */
     public Optional<String> scrapeEmails(String url) throws IOException {
         Set<String> emails = new HashSet<>();
         Document doc = Jsoup.connect(url).get();
@@ -40,29 +47,45 @@ public class ScrapedBusinessService {
         return emails.isEmpty() ? Optional.empty() : Optional.of(String.join(", ", emails));
     }
 
-    // MARK AS PROCESSED
+    /**
+     * Marks a ScrapedBusiness entity as processed by updating its status to PROCESSED and saving it in the repository.
+     *
+     * @param scrapedBusiness the ScrapedBusiness entity to mark as processed
+     */
     public void markProcessed(ScrapedBusiness scrapedBusiness) {
         scrapedBusiness.setStatusType(StatusType.PROCESSED);
         scrapedBusinessRepository.save(scrapedBusiness);
     }
 
-    // SET EMAIL
-    // MARK AS PROCESSED
+    /**
+     * Sets the email address for a ScrapedBusiness entity, marks it as pending, and saves it in the repository.
+     *
+     * @param scrapedBusiness the ScrapedBusiness entity to update
+     * @param emails the email addresses to set for the business
+     */
     public void setEmailAddressAndMarkProcessed(ScrapedBusiness scrapedBusiness, String emails) {
         scrapedBusiness.setEmailAddress(emails);
         scrapedBusiness.setStatusType(StatusType.PENDING);
         scrapedBusinessRepository.save(scrapedBusiness);
     }
 
-    // SET ERROR MESSAGE
-    // MARK AS ERRORED
+    /**
+     * Sets an error message for a ScrapedBusiness entity, marks it as errored, and saves it in the repository.
+     *
+     * @param scrapedBusiness the ScrapedBusiness entity to update
+     * @param errorMessage the error message to set for the business
+     */
     public void setErrorMessageAndMarkError(ScrapedBusiness scrapedBusiness, String errorMessage) {
         scrapedBusiness.setErrorMessage(errorMessage);
         scrapedBusiness.setStatusType(StatusType.ERROR);
         scrapedBusinessRepository.save(scrapedBusiness);
     }
 
-    // MARK AS EMAILED
+    /**
+     * Marks a ScrapedBusiness entity as emailed by updating its status to EMAILED and saving it in the repository.
+     *
+     * @param scrapedBusiness the ScrapedBusiness entity to mark as emailed
+     */
     public void setAsEmailed(ScrapedBusiness scrapedBusiness) {
         scrapedBusiness.setStatusType(StatusType.EMAILED);
         scrapedBusinessRepository.save(scrapedBusiness);

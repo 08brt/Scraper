@@ -29,6 +29,12 @@ public class ScrapedEmailProcessor {
                 .forEach(this::scrapeEmail);
     }
 
+    /**
+     * Scrapes emails from the website of the given ScrapedBusiness.
+     * Updates the business status and email address if emails are found, otherwise marks it as processed.
+     *
+     * @param scrapedBusiness the ScrapedBusiness entity whose website will be scraped for emails
+     */
     public void scrapeEmail(ScrapedBusiness scrapedBusiness) {
     log.info("Currently scraping emails from website: {}", scrapedBusiness.getWebsite());
 

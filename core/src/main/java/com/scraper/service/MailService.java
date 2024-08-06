@@ -23,6 +23,12 @@ public class MailService {
     private final CommunicationService communicationService;
     private final ScrapedBusinessService scrapedBusinessService;
 
+    /**
+     * Processes the mail for a given ScrapedBusiness by saving, sending, and logging communications.
+     *
+     * @param scrapedBusiness the business details to be used for email communication
+     * @param mail the mail object containing email details
+     */
     @Transactional
     public void processMail(ScrapedBusiness scrapedBusiness, Mail mail) {
 
@@ -50,6 +56,13 @@ public class MailService {
 
     }
 
+    /**
+     * Configures and returns a MimeMessage using the details from the given Mail object.
+     *
+     * @param mail the mail object containing email details
+     * @return a MimeMessage configured with the provided mail details
+     * @throws MessagingException if there is an error in creating or setting up the MimeMessage
+     */
     private MimeMessage setSimpleMailMessage(Mail mail) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");

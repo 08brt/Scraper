@@ -26,6 +26,12 @@ public class ScrapedBusinessProcessor {
     @Value("${google.keyword}")
     private String keyword;
 
+    /**
+     * Scheduled task that fetches business data from Google Maps API every hour.
+     * It processes unprocessed locations, maps them to ScrapedBusiness entities, and saves them to the database.
+     *
+     * @throws InterruptedException if the thread is interrupted during the process
+     */
     @Scheduled(fixedRate = 3600000) // 1 Hour
     public void fetchGoogleData() throws InterruptedException {
 
