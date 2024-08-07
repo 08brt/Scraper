@@ -27,7 +27,7 @@ The Scraper Application is a Spring Boot-based project designed to automate the 
 
 - Java 17
 - Maven
-- Docker (for running PostgreSQL)
+- Docker (for running PostgreSQL integration tests)
 
 ### Configuration
 
@@ -44,17 +44,12 @@ The Scraper Application is a Spring Boot-based project designed to automate the 
    ```bash
    mvn clean install
 
-2. Starting docker
-
-   ```bash
-   docker-compose up
-
-3. Run the application (CORE):
+2. Run the application (CORE):
 
     ```bash
    mvn spring-boot:run -pl :core
 
-4. Run the application (SCHEDULED):
+3. Run the application (SCHEDULED):
 
     ```bash
    mvn spring-boot:run -pl :scheduled
