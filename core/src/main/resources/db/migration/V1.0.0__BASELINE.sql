@@ -61,14 +61,6 @@ CREATE TABLE email_template
     updated_at    TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- TEMP DATA INSERT DELETE WHEN FINISHED
-INSERT INTO scraped_business (id, place_id, keyword, location, name, address, phone_number, website, email_address, status_type,  created_at, updated_at) VALUES (1, 'ChIJP_vAqNMMdkgRyd8vlAE6rNs', 'mechanic', 'Hounslow', 'A M P Auto Repair Centre', '228 Grove Rd, Hounslow TW3 3PZ, UK', '+44 20 8570 4608', null, null, 'PENDING', '2024-07-29 19:38:09.596216', '2024-07-29 19:38:09.596216');
-INSERT INTO scraped_business (id, place_id, keyword, location, name, address, phone_number, website, email_address, status_type, created_at, updated_at) VALUES (4, 'ChIJeXRbtOcMdkgRx_jvZanbuuE', 'mechanic', 'Hounslow', 'Doug The Mobile Fitter', '64 Catherine Gardens, Hounslow TW3 2PR, UK', '+44 20 8568 7645', null, null, 'PENDING', '2024-07-29 19:38:13.088653', '2024-07-29 19:38:13.088653');
-INSERT INTO scraped_business (id, place_id, keyword, location, name, address, phone_number, website, email_address, status_type, created_at, updated_at) VALUES (5, 'ChIJqQN2QytzdkgRlZqQN9Lh_8Y', 'mechanic', 'Hounslow', 'Anees Auto Care Centre', 'Unit 2 Osborne Rd, Hounslow TW4 7AE, UK', '+44 20 8570 4730', null, null, 'PENDING', '2024-07-29 19:38:13.094850', '2024-07-29 19:38:13.094850');
-INSERT INTO scraped_business (id, place_id, keyword, location, name, address, phone_number, website, email_address, status_type, created_at, updated_at) VALUES (6, 'ChIJT9UGcUhzdkgREq4ac1MafdU', 'mechanic', 'Hounslow', 'SM mobile mechanic', 'Shenley Rd, Hounslow TW5 0AD, UK', '+44 7706 847051', null, null, 'PENDING', '2024-07-29 19:38:13.101331', '2024-07-29 19:38:13.101331');
-INSERT INTO scraped_business (id, place_id, keyword, location, name, address, phone_number, website, email_address, status_type, created_at, updated_at) VALUES (7, 'ChIJdRjglM1ydkgRnekZnObB-5E', 'mechanic', 'Hounslow', 'Heston auto mechanics', 'Rear of, 341 Vicarage Farm Rd, Hounslow TW5 0DZ, UK', '+44 7414 704819', null, null, 'PENDING', '2024-07-29 19:38:13.107697', '2024-07-29 19:38:13.107697');
-INSERT INTO scraped_business (id, place_id, keyword, location, name, address, phone_number, website, email_address, status_type, created_at, updated_at) VALUES (10, 'ChIJr_UnSchzdkgRxdSZwvVieh0', 'mechanic', 'Hounslow', '22 MOTORS ️ | Affordable Auto Body Repair in London', '325B Vicarage Farm Rd, Hounslow TW5 0DR, UK', '+44 20 7101 4322', 'https://22motors.co.uk/', null, 'PENDING', '2024-07-29 19:38:13.126142', '2024-07-29 19:38:13.126142');
-
 -- Insert Email Template Data
 INSERT INTO email_template (template_type, subject, template)
 VALUES ('HEALTH_CHECK_PROMO', 'Optimize Your Garage Reports with Free 7-Day Vehicle HealthCheck for iOS!', '<!DOCTYPE html>
