@@ -5,32 +5,79 @@ import com.scraper.enums.TemplateType;
 import com.scraper.model.EmailTemplate;
 import com.scraper.model.Mail;
 import com.scraper.model.ScrapedBusiness;
+import com.scraper.repository.CommunicationRepository;
+import com.scraper.repository.MailRepository;
+import com.scraper.repository.ScrapedBusinessRepository;
 import com.scraper.service.EmailTemplateQuery;
 import com.scraper.service.MailQuery;
+import com.scraper.service.MailService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mail.javamail.JavaMailSender;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Optional;
 
-class MailTest extends AbstractTests {
+import static org.mockito.Mockito.*;
 
-    private ScrapedBusiness scrapedBusiness;
+class MailTest extends AbstractTests {
 
     @Value("${spring.mail.username}")
     private String fromEmail;
 
-    @Autowired
-    private MailQuery mailQuery;
+    private Mail mail;
+    private ScrapedBusiness scrapedBusiness;
+
+    @MockBean
+    private JavaMailSender mailSender;
 
     @Autowired
+    private CommunicationRepository communicationRepository;
+    @Autowired
     private EmailTemplateQuery emailTemplateQuery;
+    @Autowired
+    private MailQuery mailQuery;
+    @Autowired
+    private MailRepository mailRepository;
+    @Autowired
+    private MailService mailService;
+    @Autowired
+    private ScrapedBusinessRepository scrapedBusinessRepository;
 
     @BeforeEach
     void setUp() {
-        scrapedBusiness = TestData.createScrapedBusiness();
+        scrapedBusiness = scrapedBusinessRepository.save(TestData.createScrapedBusiness());
+        mail = mailRepository.save(TestData.createMail());
+    }
+
+    @AfterEach
+    void cleanUp() {
+        communicationRepository.deleteAll();
+        mailRepository.deleteAll();
+        scrapedBusinessRepository.deleteAll();
+    }
+
+    @Test
+    void sendEmail() {
+        MimeMessage mimeMessage = mock(MimeMessage.class);
+        when(mailSender.createMimeMessage()).thenReturn(mimeMessage);
+
+        mailService.processMail(scrapedBusiness, mail);
+
+        Assertions.assertTrue(mailRepository.findById(mail.getId()).isPresent(), "Mail should be saved in the database");
+
+        Mail savedMail = mailRepository.findById(mail.getId()).get();
+        Assertions.assertEquals(mail.getFromEmail(), savedMail.getFromEmail());
+        Assertions.assertEquals(mail.getToEmails(), savedMail.getToEmails());
+        Assertions.assertEquals(mail.getSubject(), savedMail.getSubject());
+        Assertions.assertEquals(mail.getBody(), savedMail.getBody());
+
+        verify(mailSender, times(1)).send(mimeMessage);
     }
 
     @Test
