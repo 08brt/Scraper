@@ -53,7 +53,7 @@ public class MailQuery {
      * @param body the email template body containing placeholders
      * @return a personalized email body with placeholders replaced by business-specific details
      */
-    private String getPersonalisedBody(ScrapedBusiness scrapedBusiness, String body) {
+    public String getPersonalisedBody(ScrapedBusiness scrapedBusiness, String body) {
         return body.replace("{Business Owner}", scrapedBusiness.getName());
     }
 }

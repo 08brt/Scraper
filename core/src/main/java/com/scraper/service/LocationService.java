@@ -11,8 +11,8 @@ public class LocationService {
 
     private final LocationRepository locationRepository;
 
-    public void saveLocation(Location location) {
-        locationRepository.save(location);
+    public Location saveLocation(Location location) {
+        return locationRepository.save(location);
     }
 
     public void markLocationAsProcessed(Location location) {
