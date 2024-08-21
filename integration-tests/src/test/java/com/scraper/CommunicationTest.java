@@ -1,6 +1,7 @@
 package com.scraper;
 
 import com.scraper.data.TestData;
+import com.scraper.mapper.CommunicationMapper;
 import com.scraper.model.Communication;
 import com.scraper.model.Mail;
 import com.scraper.model.ScrapedBusiness;
@@ -16,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-class CommunicationServiceTest extends AbstractTests {
+class CommunicationTest extends AbstractTests {
 
     @Autowired
     private CommunicationRepository communicationRepository;
@@ -29,6 +30,9 @@ class CommunicationServiceTest extends AbstractTests {
 
     @Autowired
     private MailRepository mailRepository;
+
+    @Autowired
+    private CommunicationMapper communicationMapper;
 
     private Mail mail;
     private ScrapedBusiness scrapedBusiness;
@@ -48,7 +52,7 @@ class CommunicationServiceTest extends AbstractTests {
     }
 
     @Test
-    void testSaveCommunication() {
+    void saveCommunicationTest() {
         communicationService.saveCommunication(scrapedBusiness, mail);
 
         List<Communication> communications = communicationRepository.findAll();
@@ -57,5 +61,15 @@ class CommunicationServiceTest extends AbstractTests {
         Assertions.assertEquals(scrapedBusiness.getId(), communications.get(0).getScrapedBusiness().getId());
         Assertions.assertEquals(mail.getId(), communications.get(0).getMail().getId());
         Assertions.assertTrue(communications.get(0).isContacted());
+    }
+
+    @Test
+    void mappingTest() {
+        Communication communication = communicationMapper.map(scrapedBusiness, mail);
+
+        Assertions.assertNotNull(communication);
+        Assertions.assertEquals(scrapedBusiness, communication.getScrapedBusiness());
+        Assertions.assertEquals(mail, communication.getMail());
+        Assertions.assertTrue(communication.isContacted());
     }
 }
