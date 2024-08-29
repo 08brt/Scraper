@@ -15,12 +15,19 @@ import java.util.Optional;
 public class MailQuery {
 
     private final EmailTemplateQuery emailTemplateQuery;
+    private final OpenAIService openAIService;
 
     @Value("${spring.mail.username}")
     private String fromEmail;
 
+    @Value("${openai.prompt.body}")
+    private String prompt;
+
     /**
      * Creates a Mail object populated with details from the given ScrapedBusiness and email template.
+     * This method uses OpenAI's GPT model to generate an email body, aiming to create content that is
+     * less likely to be flagged as spam. It combines a predefined email template with AI-generated text
+     * to enhance engagement and personalization.
      *
      * @param scrapedBusiness the business details obtained from scraping
      * @param templateType the type of template to use for the email
@@ -35,8 +42,11 @@ public class MailQuery {
 
         EmailTemplate emailTemplate = optionalEmailTemplate.get();
 
-        // Get personalised body
-        String body = getPersonalisedBody(scrapedBusiness, emailTemplate.getTemplate());
+        // Create an AI email body to avoid getting flagged for spam
+        String body = openAIService.getChatGptResponse(prompt + "\n\n" + emailTemplate.getTemplate());
+
+        // Personalise body with company name
+        body = getPersonalisedBody(scrapedBusiness, body);
 
         return Optional.of(Mail.builder()
                 .fromEmail(fromEmail)
